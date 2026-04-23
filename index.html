@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mene tumko Pana Hai Ya Tune Merko Khona Ji</title>
+  <title>Live Location Tracking</title>
   <meta charset="UTF-8">
 </head>
 <body>
 
-<h3>Mene tumko Pana Hai Ya Tune Merko Khona Ji</h3>
+<h3>Live Location Tracking</h3>
 <p id="status">Waiting for GPS permission…</p>
 <p id="coords"></p>
 
 <script>
 if (!navigator.geolocation) {
   document.getElementById("status").innerText =
-    "Mene tumko Pana Hai Ya Tune Merko Khona Ji";
+    "Live Location Tracking";
 } else {
 
   document.getElementById("status").innerText =
-    "Mene tumko Pana Hai Ya Tune Merko Khona Ji.";
+    "Live tracking started. Keep this page open.";
 
   navigator.geolocation.watchPosition(
     (pos) => {
